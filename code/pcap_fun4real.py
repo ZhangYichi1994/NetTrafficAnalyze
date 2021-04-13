@@ -86,11 +86,11 @@ if __name__ == '__main__':
         print('-------------开始进行实时抓包并进行解析，当前为第', time+1, '轮分析-------------')
 
         # """抓包"""
-        # pcap = sniff(count=1000, filter='tcp')
-        # pcap_filename = 'sample' + str(time) + '.pcap'
+        pcap = sniff(count=1000, filter='tcp')
+        pcap_filename = 'sample' + str(time) + '.pcap'
         # wrpcap(pcap_filename, pcap)  # 保存pcap包到本地
         # # pcap = rdpcap('demo4.pcap')  # 读取本地pcap包
-        pcap = rdpcap('sample9.pcap')  # 读取本地pcap包
+        # pcap = rdpcap('sample9.pcap')  # 读取本地pcap包
 
         """解析"""
         flag = 1
@@ -108,8 +108,8 @@ if __name__ == '__main__':
                     else:
                         id_j = pcap[j]['TCP'].seq  # 找出第j个包的身份证号
                         if id_i == id_j:  # 证明响应包与数据包匹配，
-                            instance.append(pcap[i]['IP'].src)  # 第i个数据包的IP地址
-                            instance.append(pcap[j]['IP'].src)  # 第j个数据包的IP地址
+                            instance.append(pcap[i]['IP'].src)  # 第i个数据包的IP地址，请求地址
+                            instance.append(pcap[j]['IP'].src)  # 第j个数据包的IP地址，响应地址
                             instance.append(pcap[i]['Ether'].dst)  # 第i个数据包的MAC地址
                             instance.append(pcap[j]['Ether'].dst)  # 第j个数据包的MAC地址
                             instance.append(pcap[i]['IP'].len)  # 第i个数据包的IP协议长度
