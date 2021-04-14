@@ -3,6 +3,7 @@ from scapy.utils import wrpcap
 import pandas as pd
 import struct
 import math
+import pyodbc
 
 
 """将十进制转化为浮点型"""
@@ -80,6 +81,10 @@ def data_ana(lis):
 
 if __name__ == '__main__':
 
+    #connect odbc database
+    cnxn = pyodbc.connect("DSN=transwarp-hs2-kerberos")
+    cursor = cnxn.cursor()
+
     for time in range(0, 10):
         time  = 9
         print('')
@@ -130,12 +135,12 @@ if __name__ == '__main__':
                             data = data_ana(load_j[25: len(load_j)])
                             instance.append(data)
 
-                            print('No.', time+1, '轮，第', i+1, '和第', j+1, '个包组成的匹配包解析完成')
+                        #     print('No.', time+1, '轮，第', i+1, '和第', j+1, '个包组成的匹配包解析完成')
 
-                            break  # 能找到匹配的就跳出循环    ***********************（1）
-                        else:
-                            print('Warning: No.', time+1, '轮，第', i+1, '和第', j+1, '个包不匹配，继续向下遍历...')
-                            continue  # 不匹配就继续往下找，循环继续    ***********************（1）
+                        #     break  # 能找到匹配的就跳出循环    ***********************（1）
+                        # else:
+                        #     print('Warning: No.', time+1, '轮，第', i+1, '和第', j+1, '个包不匹配，继续向下遍历...')
+                        #     continue  # 不匹配就继续往下找，循环继续    ***********************（1）
                 if j == (len(pcap) - 1):
                     i = i + 1
                 else:
@@ -151,6 +156,11 @@ if __name__ == '__main__':
             if instance != []:
                 result.append(instance)
 
+        for i in range(len(result)):
+            cursor.execute("")
+
+        
+        
         temp = pd.DataFrame(result)
         filename = str(time)+'result.csv'
         temp.to_csv(filename)
